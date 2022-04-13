@@ -12,6 +12,5 @@ module.exports = app => {
 
   router.all('/api/healthcheck', controller.home.index);
 
-  router.post('/api/test', controller.main.index);
-
+  router.post('/api/generate', controller.main.index);
 };

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra')
 const path = require('path');
 
 const Service = require('egg').Service;
@@ -16,10 +16,10 @@ class MainService extends Service {
         const { username, customHost: url, customPort: host } = option;
 
         // write to file
-        await fs.mkdirSync(path.join(app.config.path, '/pacfile/'));
+        await fs.ensureDirSync(path.join(app.config.path, '/pacfile/'))
         await fs.writeFileSync(path.join(app.config.path, '/pacfile/', `${username}_pac_file.js`), pac_template(url, host), { encoding: 'utf8', flag: 'w+' });
 
-        return fs.createReadStream(path.join(app.config.path, '/pacfile/', `${username}_pac_file.js`))
+        return { filename: `${username}_pac_file.js`, file: fs.createReadStream(path.join(app.config.path, '/pacfile/', `${username}_pac_file.js`)) }
     }
 }
 
