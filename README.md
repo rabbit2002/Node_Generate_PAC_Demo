@@ -4,12 +4,12 @@
 
 <div align="center">
 
-English | [简体中文](./README-zh_CN.md)
-
-[![CI status][github-action-image]][github-action-url] [![codecov][codecov-image]][codecov-url] [![License][License-image]][License-url]
 
 
+English | [简体中文](./README-zh_CN.md) 
 
+ [![License][License-image]][License-url]
+ 
 </div>
 
 ## Abstract
@@ -45,11 +45,6 @@ $ npm stop
 [Go + GoFrame BackEnd Version]: https://github.com/rabbit2002/Node_Generate_PAC_Demo
 
 
-
-[github-action-image]: https://github.com/ant-design/ant-design/workflows/%E2%9C%85%20test/badge.svg
-[github-action-url]: https://github.com/ant-design/ant-design/actions?query=workflow%3A%22%E2%9C%85+test%22
-[codecov-image]: https://img.shields.io/codecov/c/github/ant-design/ant-design/master.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/ant-design/ant-design/branch/master
 [fossa-image]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fant-design%2Fant-design.svg?type=shield
 [fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2Fant-design%2Fant-design?ref=badge_shield
 [License-image]: https://img.shields.io/badge/license-GPL-blue
