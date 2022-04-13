@@ -8,79 +8,74 @@ class MainController extends Controller {
 
     try {
       ctx.validate({
-        username: { type: 'string', required: true, },
-        customHost: { type: 'string', required: false, },
+        username: { type: 'string', required: true },
+        customHost: { type: 'string', required: false },
         // todo
-        customPort: { type: 'string', required: false, min: 0, max: 65535, },
+        customPort: { type: 'string', required: false, min: 0, max: 65535 },
       }, ctx.request.body);
     } catch (error) {
-      ctx.body = { code: 403, success: false, result: error, };
+      ctx.body = { code: 403, success: false, result: error };
       return;
     }
 
-    // todo move to config
-    const { username, customHost = ctx.request.ip, customPort = 9999 } = ctx.request.body;
+    // host: param > config > req's ip / port: param > config
+    const { username, customHost = app.config.proxyDefaultHost || ctx.request.ip, customPort = app.config.proxyDefaultPort } = ctx.request.body;
 
-    // todo
-    let checkResult = await ctx.service.main.checkList();
+    const { fileDirPath, filenameWithExtension, fileFullpath } = await ctx.service.main.generatePacFile(username, customHost, customPort);
 
-    let { fileDirPath, filenameWithExtension, fileFullpath } = await ctx.service.main.generatePacFile(username, customHost, customPort);
-
-    return ctx.body = { code: 200, success: true, result: { fileDirPath, filenameWithExtension, fileFullpath, }, }
-
-
+    return ctx.body = { code: 200, success: true, result: { fileDirPath, filenameWithExtension, fileFullpath } };
   }
 
   async downloacPacFile() {
-    const { ctx, app } = this;
+    const { ctx } = this;
 
     try {
       ctx.validate({
-        username: { type: 'string', required: true, },
+        username: { type: 'string', required: true },
       }, ctx.request.query);
     } catch (error) {
-      ctx.body = { code: 403, success: false, result: error, };
+      ctx.body = { code: 403, success: false, result: error };
       return;
     }
 
     const { username } = ctx.request.query;
 
-    let fileExist = await ctx.service.main.judgePacFileExist(username);
+    const fileExist = await ctx.service.main.judgePacFileExist(username);
     if (!fileExist) {
-      return ctx.body = { code: 200, success: false, result: 'file not exist, check input username', }
+      return ctx.body = { code: 200, success: false, result: 'file not exist, check input username' };
     }
 
-    const { dirPath, filenameWithExtension, fileFullpath } = ctx.helper.getFilePathInfo(username);
-    let { fileContent, message } = await ctx.service.main.getPacFileContent(username);
+    const { filenameWithExtension } = ctx.helper.getFilePathInfo(username);
+    const { fileContent } = await ctx.service.main.getPacFileContent(username);
 
     ctx.set('content-Type', 'application/octet-stream');
-    ctx.set('content-Disposition', `attachment;filename=${filenameWithExtension}`)
+    ctx.set('content-Disposition', `attachment;filename=${filenameWithExtension}`);
     ctx.body = fileContent;
   }
 
   async getPacFileInfo() {
-    const { ctx, app } = this;
+    const { ctx } = this;
 
     try {
       ctx.validate({
-        username: { type: 'string', required: true, },
+        username: { type: 'string', required: true },
       }, ctx.request.query);
     } catch (error) {
-      ctx.body = { code: 403, success: false, result: error, };
+      ctx.body = { code: 403, success: false, result: error };
       return;
     }
 
     const { username } = ctx.request.query;
 
-    let fileExist = await ctx.service.main.judgePacFileExist(username);
+    const fileExist = await ctx.service.main.judgePacFileExist(username);
     if (!fileExist) {
-      return ctx.body = { code: 200, success: false, result: 'file not exist, check input username', }
+      return ctx.body = { code: 200, success: false, result: 'file not exist, check input username' };
     }
 
-    let { fileStat, message: statErrMessage } = await ctx.service.main.getPacFileProperties(username);
-    let { fileContent, message: contentErrmessage } = await ctx.service.main.getPacFileContent(username);
+    const { fileStat } = await ctx.service.main.getPacFileProperties(username);
+    const { fileContent } = await ctx.service.main.getPacFileContent(username);
 
-    return ctx.body = { code: 200, success: true, result: { fileStat, fileContent, }, }
+    return ctx.body = { code: 200, success: true, result: { fileStat, fileContent } };
   }
 
 }

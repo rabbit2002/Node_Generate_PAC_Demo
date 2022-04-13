@@ -6,7 +6,7 @@
 module.exports = app => {
   const { router, controller } = app;
 
-  router.all('/', async (ctx, next) => {
+  router.all('/', async ctx => {
     ctx.redirect('/public/index.html');
   });
 

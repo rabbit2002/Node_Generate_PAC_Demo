@@ -19,7 +19,8 @@
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
     "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0"
+    "eslint-config-egg": "^7.1.0",
+    "eslint-plugin-async-await": "^0.0.0"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -33,6 +34,7 @@
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
   },

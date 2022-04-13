@@ -1,5 +1,3 @@
-/* eslint valid-jsdoc: "off" */
-
 'use strict';
 
 const path = require('path');
@@ -38,8 +36,10 @@ module.exports = appInfo => {
     },
   };
 
-  // pac dir
+  // pac setting
   config.pacFileDir = path.join(appInfo.root, '/pacfile/');
+  config.proxyDefaultHost = null;
+  config.proxyDefaultPort = 9999;
 
   return {
     ...config,
