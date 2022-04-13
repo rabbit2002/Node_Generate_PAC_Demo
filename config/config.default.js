@@ -13,14 +13,14 @@ module.exports = appInfo => {
   const config = exports = {};
 
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1649851372272_2294';
+  config.keys = `${appInfo.name},_1649851372272_2294` ;
 
   // add your middleware config here
   config.middleware = [];
 
   // add your user config here
   const userConfig = {
-    // myAppName: 'egg',
+    myAppName: 'Generate_PAC_Node',
   };
 
   config.static = {
@@ -42,7 +42,7 @@ module.exports = appInfo => {
   config.proxyDefaultPort = 9999;
 
   return {
-    ...config,
-    ...userConfig,
+    ...config, // egg默认配置
+    ...userConfig // 用户自定义配置
   };
 };
