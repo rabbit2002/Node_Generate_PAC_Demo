@@ -4,22 +4,72 @@ const path = require('path');
 const Service = require('egg').Service;
 
 class MainService extends Service {
-    async checkList(option) {
+    async checkList() {
         const { ctx, app } = this;
 
         return true;
     }
 
-    async generatePacFileInfo(option) {
+    async generatePacFile(username, customHost, customPort) {
         const { ctx, app } = this;
 
-        const { username, customHost: url, customPort: host } = option;
+        // todo fix config
+        let pacDirPath = path.join(app.config.path, '/pacfile/');
+        let filename = `${username}.pac`;
+        let filepath = path.join(pacDirPath, filename);
 
-        // write to file
-        await fs.ensureDirSync(path.join(app.config.path, '/pacfile/'))
-        await fs.writeFileSync(path.join(app.config.path, '/pacfile/', `${username}.pac`), pac_template(url, host), { encoding: 'utf8', flag: 'w+' });
+        fs.ensureDirSync(pacDirPath);
+        fs.writeFileSync(filepath, pac_template(customHost, customPort), { encoding: 'utf8', flag: 'w+' });
 
-        return { filename: `${username}.pac`, file: fs.createReadStream(path.join(app.config.path, '/pacfile/', `${username}.pac`)) }
+        return { filepath, filename }
+    }
+
+    async judgePacFileExist(username) {
+        const { ctx, app } = this;
+
+        let pacDirPath = path.join(app.config.path, '/pacfile/');
+        let filename = `${username}.pac`;
+        let filepath = path.join(pacDirPath, filename);
+
+        return fs.existsSync(filepath);
+    }
+
+    async getPacFileProperties(username) {
+        const { ctx, app } = this;
+
+        let pacDirPath = path.join(app.config.path, '/pacfile/');
+        let filename = `${username}.pac`;
+        let filepath = path.join(pacDirPath, filename);
+
+        let fileStat = null;
+        let message = 'success';
+
+        try {
+            fileStat = fs.statSync(filepath);
+        } catch (error) {
+            message = error;
+        }
+
+        return { fileStat, message };
+    }
+
+    async getPacFileContent(username) {
+        const { ctx, app } = this;
+
+        let pacDirPath = path.join(app.config.path, '/pacfile/');
+        let filename = `${username}.pac`;
+        let filepath = path.join(pacDirPath, filename);
+
+        let fileContent = null;
+        let message = 'success';
+
+        try {
+            fileContent = fs.readFileSync(filepath, { encoding: 'utf8' });
+        } catch (error) {
+            message = error;
+        }
+
+        return { fileContent, message };
     }
 }
 

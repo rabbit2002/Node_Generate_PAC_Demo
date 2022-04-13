@@ -3,13 +3,8 @@
 const Controller = require('egg').Controller;
 
 class MainController extends Controller {
-  async index() {
+  async generatePacFile() {
     const { ctx, app } = this;
-
-    // 1. check user permission
-    // 2. generate pac file
-    // 3. get pac file info
-    // 4. download pac file
 
     try {
       ctx.validate({
@@ -19,20 +14,51 @@ class MainController extends Controller {
         customPort: { type: 'string', required: false, min: 0, max: 65535, },
       }, ctx.request.body);
     } catch (error) {
-      ctx.body = { code: 403, success: false, message: error };
+      ctx.body = { code: 403, success: false, result: error };
       return;
     }
 
+    // todo move to config
     const { username, customHost = ctx.request.ip, customPort = 9999 } = ctx.request.body;
 
-    let checkResult = await ctx.service.main.checkList({});
+    // todo
+    let checkResult = await ctx.service.main.checkList();
 
-    let temp = await ctx.service.main.generatePacFileInfo({ username, customHost, customPort });
+    let { filepath, filename } = await ctx.service.main.generatePacFile(username, customHost, customPort);
+    let { fileContent, message } = await ctx.service.main.getPacFileContent(username);
 
     ctx.set('content-Type', 'application/octet-stream');
-    ctx.set('content-Disposition', `attachment;filename=${temp.filename}`)
-    ctx.body = temp.file;
+    ctx.set('content-Disposition', `attachment;filename=${filename}`)
+    ctx.body = fileContent;
   }
+
+  async getPacFileInfo() {
+    const { ctx, app } = this;
+
+    try {
+      ctx.validate({
+        username: { type: 'string', required: true, },
+      }, ctx.request.query);
+    } catch (error) {
+      ctx.body = { code: 403, success: false, result: error };
+      return;
+    }
+
+    const { username } = ctx.request.query;
+
+    let fileExist = await ctx.service.main.judgePacFileExist(username);
+    if (!fileExist) {
+      return ctx.body = {
+        code: 200, success: false, result: 'file not exist, check input username',
+      }
+    }
+
+    let { fileStat, message: statErrMessage } = await ctx.service.main.getPacFileProperties(username);
+    let { fileContent, message: contentErrmessage } = await ctx.service.main.getPacFileContent(username);
+
+    return ctx.body = { code: 200, success: true, result: { fileStat, fileContent, }, }
+  }
+
 }
 
 module.exports = MainController;
