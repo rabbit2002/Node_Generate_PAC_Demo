@@ -1,19 +1,20 @@
 # Node_Generate_PAC_Demo
 
+## Abstract
+The intent of the project is to generate a custom PAC file on the server to simplify the proxy setup experience on mobile devices
 
+## Technology Stack
+1. Node.js
+2. Egg.js  see [egg docs][egg] for more detail.
 
 ## QuickStart
-
-<!-- add docs here for user -->
-
-see [egg docs][egg] for more detail.
 
 ### Development
 
 ```bash
 $ npm i
 $ npm run dev
-$ open http://localhost:7001/
+$ open http://localhost:7001/ by browsers
 ```
 
 ### Deploy
@@ -22,12 +23,3 @@ $ open http://localhost:7001/
 $ npm start
 $ npm stop
 ```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-- Use `npm run autod` to auto detect dependencies upgrade, see [autod](https://www.npmjs.com/package/autod) for more detail.
-
-
-[egg]: https://eggjs.org
