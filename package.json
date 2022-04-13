@@ -7,6 +7,7 @@
     "declarations": true
   },
   "dependencies": {
+    "babel-eslint": "^10.1.0",
     "egg": "^2.15.1",
     "egg-scripts": "^2.11.0",
     "egg-validate": "^2.0.2",
@@ -46,5 +47,8 @@
     "url": ""
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "eslintConfig": {
+    "parser": "babel-eslint"
+  }
 }
