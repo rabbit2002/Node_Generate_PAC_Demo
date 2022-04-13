@@ -2,6 +2,8 @@
 
 'use strict';
 
+const path = require('path');
+
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -36,7 +38,8 @@ module.exports = appInfo => {
     },
   };
 
-  config.path = appInfo.root;
+  // pac dir
+  config.pacFileDir = path.join(appInfo.root, '/pacfile/');
 
   return {
     ...config,

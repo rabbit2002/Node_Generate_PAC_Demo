@@ -12,6 +12,7 @@ module.exports = app => {
 
   router.all('/api/healthcheck', controller.home.index);
 
-  router.post('/api/generate', controller.main.generatePacFile);
+  router.post('/api/generatePacFile', controller.main.generatePacFile);
+  router.get('/api/downloacPacFile', controller.main.downloacPacFile);
   router.get('/api/getPacFileInfo', controller.main.getPacFileInfo);
 };

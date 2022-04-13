@@ -1,5 +1,6 @@
+'use strict';
+
 const fs = require('fs-extra')
-const path = require('path');
 
 const Service = require('egg').Service;
 
@@ -13,39 +14,32 @@ class MainService extends Service {
     async generatePacFile(username, customHost, customPort) {
         const { ctx, app } = this;
 
-        // todo fix config
-        let pacDirPath = path.join(app.config.path, '/pacfile/');
-        let filename = `${username}.pac`;
-        let filepath = path.join(pacDirPath, filename);
+        const { dirPath, filenameWithExtension, fileFullpath } = ctx.helper.getFilePathInfo(username);
 
-        fs.ensureDirSync(pacDirPath);
-        fs.writeFileSync(filepath, pac_template(customHost, customPort), { encoding: 'utf8', flag: 'w+' });
+        fs.ensureDirSync(dirPath);
+        fs.writeFileSync(fileFullpath, ctx.helper.generatePacContent(customHost, customPort), { encoding: 'utf8', flag: 'w+' });
 
-        return { filepath, filename }
+        return { fileDirPath: dirPath, filenameWithExtension, fileFullpath }
     }
 
     async judgePacFileExist(username) {
         const { ctx, app } = this;
 
-        let pacDirPath = path.join(app.config.path, '/pacfile/');
-        let filename = `${username}.pac`;
-        let filepath = path.join(pacDirPath, filename);
+        const { dirPath, filenameWithExtension, fileFullpath } = ctx.helper.getFilePathInfo(username);
 
-        return fs.existsSync(filepath);
+        return fs.existsSync(fileFullpath);
     }
 
     async getPacFileProperties(username) {
         const { ctx, app } = this;
 
-        let pacDirPath = path.join(app.config.path, '/pacfile/');
-        let filename = `${username}.pac`;
-        let filepath = path.join(pacDirPath, filename);
+        const { dirPath, filenameWithExtension, fileFullpath } = ctx.helper.getFilePathInfo(username);
 
         let fileStat = null;
         let message = 'success';
 
         try {
-            fileStat = fs.statSync(filepath);
+            fileStat = fs.statSync(fileFullpath);
         } catch (error) {
             message = error;
         }
@@ -56,26 +50,19 @@ class MainService extends Service {
     async getPacFileContent(username) {
         const { ctx, app } = this;
 
-        let pacDirPath = path.join(app.config.path, '/pacfile/');
-        let filename = `${username}.pac`;
-        let filepath = path.join(pacDirPath, filename);
+        const { dirPath, filenameWithExtension, fileFullpath } = ctx.helper.getFilePathInfo(username);
 
         let fileContent = null;
         let message = 'success';
 
         try {
-            fileContent = fs.readFileSync(filepath, { encoding: 'utf8' });
+            fileContent = fs.readFileSync(fileFullpath, { encoding: 'utf8' });
         } catch (error) {
             message = error;
         }
 
         return { fileContent, message };
     }
-}
-
-// fixme need move to helper
-function pac_template(url, host) {
-    return `function FindProxyForURL(url, host) { return "PROXY ${url}:${host}; DIRECT"; }`
 }
 
 module.exports = MainService;
