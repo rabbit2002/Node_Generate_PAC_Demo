@@ -17,9 +17,9 @@ class MainService extends Service {
 
         // write to file
         await fs.ensureDirSync(path.join(app.config.path, '/pacfile/'))
-        await fs.writeFileSync(path.join(app.config.path, '/pacfile/', `${username}_pac_file.js`), pac_template(url, host), { encoding: 'utf8', flag: 'w+' });
+        await fs.writeFileSync(path.join(app.config.path, '/pacfile/', `${username}.pac`), pac_template(url, host), { encoding: 'utf8', flag: 'w+' });
 
-        return { filename: `${username}_pac_file.js`, file: fs.createReadStream(path.join(app.config.path, '/pacfile/', `${username}_pac_file.js`)) }
+        return { filename: `${username}.pac`, file: fs.createReadStream(path.join(app.config.path, '/pacfile/', `${username}.pac`)) }
     }
 }
 
