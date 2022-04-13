@@ -11,8 +11,8 @@ describe('test/app/controller/home.test.js', () => {
     // yield ctx.service.xx();
   });
 
-  it('should GET /', () => app.httpRequest()
-    .get('/')
+  it('should GET /api/healthcheck', () => app.httpRequest()
+    .get('/api/healthcheck')
     .expect('hi, egg')
     .expect(200));
 });
