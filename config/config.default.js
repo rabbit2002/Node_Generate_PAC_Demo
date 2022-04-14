@@ -13,7 +13,7 @@ module.exports = appInfo => {
   const config = exports = {};
 
   // use for cookie sign key, should change to your own and keep security
-  config.keys = `${appInfo.name},_1649851372272_2294` ;
+  config.keys = `${appInfo.name}_1649851372272_2294`;
 
   // add your middleware config here
   config.middleware = [];
@@ -34,6 +34,14 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
+  };
+
+  config.logger = {
+    dir: path.join(appInfo.root, '/log'),
+    encoding: 'utf-8',
+    level: 'DEBUG',
+    disableConsoleAfterReady: false,
+    consoleLevel: 'DEBUG',
   };
 
   // pac setting
