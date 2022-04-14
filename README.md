@@ -35,13 +35,15 @@ $ npm stop
 
 
 ## Multi-language Version
-1. [Vue3 + Vite + ElementUI-Plus FrontEnd Version] 🤷‍♂️ Temporarily unavailable
-2. [Go + GoFrame BackEnd Version] 🤷‍♂️ Temporarily unavailable
+1. [Node Full-Stack Version] ✅ Available
+2. [Vue3 + Vite + ElementUI-Plus FrontEnd Version] ✅ Available
+3. [Go + GoFrame BackEnd Version] 🤷‍♂️ Temporarily unavailable
 
 
 [Node.js]: https://nodejs.org/
 [Egg.js]: https://www.eggjs.org/
-[Vue3 + Vite + ElementUI-Plus FrontEnd Version]: https://github.com/rabbit2002/Node_Generate_PAC_Demo
+[Node Full-Stack Version]: https://github.com/rabbit2002/Node_Generate_PAC_Demo
+[Vue3 + Vite + ElementUI-Plus FrontEnd Version]: https://github.com/dengjiayang/Generate_PAC_Vue
 [Go + GoFrame BackEnd Version]: https://github.com/rabbit2002/Node_Generate_PAC_Demo
 
 
